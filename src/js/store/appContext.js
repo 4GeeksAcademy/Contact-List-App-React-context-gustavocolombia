@@ -22,6 +22,7 @@ const injectContext = PassedComponent => {
 		);
 
 		useEffect(() => {
+			state.actions.createAgenda();
 			state.actions.getContactlist();
 			/** 
 			 * EDIT THIS!

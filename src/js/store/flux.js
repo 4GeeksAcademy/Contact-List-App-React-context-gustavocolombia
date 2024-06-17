@@ -2,13 +2,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			contacts: [],
-			apiUrl: "https://playground.4geeks.com/contact/agendas/gustavoColombia/contacts"
+			apiUrl: "https://playground.4geeks.com/contact"
 
 		},
 		actions: {
 			getContactlist: async () => {
+				const store = getStore()
 				try {
-					const response = await fetch("https://playground.4geeks.com/contact/agendas/gustavoColombia");
+					const response = await fetch(`${store.apiUrl}/agendas/gustavoColombia/contacts`);
 					console.log(response)
 					if (!response.ok) {
 						throw new Error("No se puede cargar")
@@ -22,11 +23,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error)
 				}
 			},
+
+			createAgenda: async () => {
+				const store = getStore()
+				try {
+				const response = await fetch(`${store.apiUrl}/agendas/gustavoColombia`, {method: "POST"});
+					console.log(response)
+					if(!response.ok) {
+						throw new Error("No se puede crear la agenda")
+					}
+					
+				} catch (error) {
+					console.log(error)
+				}
+			},
+
 			addContact: async (contact) => {
 				const store = getStore()
 				console.log(contact)
 				try {
-					const response = await fetch("https://playground.4geeks.com/contact/agendas/gustavoColombia/contacts",
+					const response = await fetch(`${store.apiUrl}/agendas/gustavoColombia/contacts`,
 						{
 							method: "POST",
 							body: JSON.stringify(contact),
@@ -49,11 +65,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				const store = getStore();
 				console.log(id, contact)
 				// try {
-					const response = await fetch(store.apiUrl + `/${id}`, {
+					const response = await fetch(`${store.apiUrl}/agendas/gustavoColombia/contacts/${id}`, {
 						method: "PUT",
 						body: JSON.stringify(contact),
 						headers: {
-							"Content-Type": "aplication/json"
+							"Content-Type": "application/json"
 						}
 					})
 					console.log(response)
@@ -79,7 +95,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			deleteContact: async (id) => {
 				try {
 					const store = getStore();
-					const response = await fetch(store.apiUrl + `/${id}`, {
+					const response = await fetch(`${store.apiUrl}/agendas/gustavoColombia/contacts/${id}`, {
 						method: "DELETE"
 					}
 
